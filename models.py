@@ -124,8 +124,8 @@ def main(argv):
         X1_te = np.concatenate((ordinal_encoder(cats_class, X1_te[:,0:7]), (X1_te[:,7:]).astype(float)), axis=1)
         # Using information gain rather than gini index caused the classifier to perform worse
         clf = GridSearchCV(DecisionTreeClassifier(criterion="gini"), {"max_depth":np.arange(3, 101)}, scoring="roc_auc", iid=False, refit=True, cv=5, error_score=np.nan)
-        print(f"Depth of tree that achieved max classification performance on training data: {(clf.best_params_)['max_depth']}")
         clf.fit(X1_tr, y1_tr)
+        print(f"Depth of tree that achieved max classification performance on training data: {(clf.best_params_)['max_depth']}")
 
     elif model_class == "nn":
         # Encode categorical data using one-hot encoding:
@@ -139,8 +139,8 @@ def main(argv):
         # I'm having the search use all the CPUs since training the neural net must be done in the cloud with sufficient computing power
         clf = GridSearchCV(MLPClassifier(activation="relu", solver="adam"), {"alpha":10.0**-np.arange(-1, 7), "hidden_layer_sizes":np.arange(5, 100)}, scoring="roc_auc",
                            iid=False, refit=True, cv=5, error_score=np.nan, n_jobs=-1)
-        print(f"Hyperparamter alpha and number of nodes in hidden layer of neural net that achieved max classification performance on training data: {clf.best_params_}")
         clf.fit(X1_tr, y1_tr)
+        print(f"Hyperparamter alpha and number of nodes in hidden layer of neural net that achieved max classification performance on training data: {clf.best_params_}")
 
     else:
         return
@@ -173,8 +173,8 @@ def main(argv):
         scaler.transform(X2_te)
         regressor = GridSearchCV(MLPRegressor(activation="relu", solver="adam"), {"alpha":10.0**-np.arange(-1, 7), "hidden_layer_sizes":np.arange(5, 100)}, scoring="neg_mean_squared_error",
                                  iid=False, refit=True, cv=5, error_score=np.nan, n_jobs=-1)
-        print(f"Hyperparamter alpha and number of nodes in hidden layer of neural net that achieved max regression performance on training data: {regressor.best_params_}")
         regressor.fit(X2_tr, y2_tr)
+        print(f"Hyperparamter alpha and number of nodes in hidden layer of neural net that achieved max regression performance on training data: {regressor.best_params_}")
 
     else:
         return
