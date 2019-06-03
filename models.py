@@ -147,7 +147,7 @@ def main(argv):
 
     print(f"ROC-AUC score of best performing {names[model_class]} on training data: {clf.best_score_:.4g}")
     # Predict the labels using the best performing estimator
-    p_labels_tr = clf.predict(X1_tr)
+    p_labels_tr = clf.predict(X1_tr).astype(np.uint8)
     correct = 0
     for i, j in zip(y1_tr, p_labels_tr):
         if i == j:
@@ -195,7 +195,7 @@ def main(argv):
     print(f"RMSE of the {names[model_regress]} on training data: {(math.sqrt(sum_square_diff/len(y2_tr))):.4g}")
 
     # Predict on the testing data:
-    p_labels_te = clf.predict(X1_te)
+    p_labels_te = clf.predict(X1_te).astype(np.uint8)
     p_regress_te = regressor.predict(X2_te[p_labels_te > 0])
 
     # Write predictions to the specified output file
